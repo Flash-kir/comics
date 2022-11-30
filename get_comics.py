@@ -15,14 +15,6 @@ def download_image(url: str, image_filename, folder):
     return image_filepath
 
 
-def save_comics(comics_filename, comics, folder='comics/'):
-    os.makedirs(os.path.join(folder), exist_ok=True)
-    comics_filename = os.path.join(folder, f'{comics_filename}.txt')
-    with open(comics_filename, 'w') as file:
-        file.write(comics)
-    return comics_filename
-
-
 def get_comics(comics_number=0):
     url = 'https://xkcd.com/info.0.json'
     if comics_number:
