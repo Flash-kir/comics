@@ -59,7 +59,6 @@ def upload_image_to_vk(url, image_filepath):
         }
         response = requests.post(url, files=files)
         response.raise_for_status()
-        os.remove(image_filepath)
         return response.json()
 
 
@@ -87,16 +86,19 @@ if __name__ == "__main__":
     last_comics_number = get_comics()["num"]
     random_comics = get_comics(random.randint(1, last_comics_number + 1))
     img_url = random_comics['img']
-    image_dir = 'images/'
+    image_dir = os.path.join('images/')
     comics_year = random_comics['year']
     comics_month = random_comics['month']
     comics_day = random_comics['day']
     comics_filename = f'{comics_year}_{comics_month}_{comics_day}'
     comics_title = random_comics['title']
     comics_alt = random_comics['alt']
-    image_filepath = download_image(img_url, comics_filename, image_dir)
-    url_for_upload_image = get_url_for_upload_image(vk_group_id, vk_app_token)
-    upload_image_response = upload_image_to_vk(url_for_upload_image, image_filepath)
-    os.rmdir(os.path.join(image_dir))
-    save_image_resp = save_image_to_vk(vk_group_id, vk_app_token, upload_image_response, comics_title)
-    publish_wall_post(vk_group_id, vk_app_token, comics_alt, save_image_resp[0])
+    try:
+        image_filepath = download_image(img_url, comics_filename, image_dir)
+        url_for_upload_image = get_url_for_upload_image(vk_group_id, vk_app_token)
+        upload_image_response = upload_image_to_vk(url_for_upload_image, image_filepath)
+        save_image_resp = save_image_to_vk(vk_group_id, vk_app_token, upload_image_response, comics_title)
+        publish_wall_post(vk_group_id, vk_app_token, comics_alt, save_image_resp[0])
+    finally:
+        os.remove(image_filepath)
+        os.rmdir(image_dir)
