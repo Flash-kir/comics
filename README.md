@@ -23,8 +23,11 @@ cp example.env .env
 #### Получение переменных
 На [странице](https://vk.com/groups?tab=admin) cоздайте группу VK по [инструкции](https://vk.com/@tectgryppa-poshagovaya-instrukciya-po-sozdaniu-gruppy-v-vk).
 - VK_CLIENT_ID
+
 Создайте [приложение](https://vk.com/editapp?act=create), тип укажите `standalone`. Запишите в `VK_CLIENT_ID` идентификационный номер приложения.
 - VK_GROUP_ID
+
 Для определения `VK_GROUP_ID` воспользуйтесь сервисом по [ссылке](https://regvk.com/id/).
 - VK_CLIENT_TOKEN
+
 Для получения токена `VK_CLIENT_TOKEN` следуйте [инструкции](https://vk.com/dev/implicit_flow_user).
