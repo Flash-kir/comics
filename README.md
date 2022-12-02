@@ -19,6 +19,12 @@ pip install -r requirements.txt
 ```bash
 cp example.env .env
 ```
+В созданном файле хранятся переменные окружения:
+```bash
+VK_CLIENT_ID='514...'
+VK_GROUP_ID='2171....'
+VK_CLIENT_TOKEN='vk1.a.EMQlcDqdD0....'
+```
 
 #### Получение переменных
 На [странице](https://vk.com/groups?tab=admin) cоздайте группу VK по [инструкции](https://vk.com/@tectgryppa-poshagovaya-instrukciya-po-sozdaniu-gruppy-v-vk).
