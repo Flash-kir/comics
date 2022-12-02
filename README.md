@@ -31,3 +31,9 @@ cp example.env .env
 - VK_CLIENT_TOKEN
 
 Для получения токена `VK_CLIENT_TOKEN` следуйте [инструкции](https://vk.com/dev/implicit_flow_user).
+
+## Запуск приложения
+Выполните команду:
+```bash
+python get_comics.py
+```
