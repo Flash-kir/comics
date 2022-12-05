@@ -1,5 +1,6 @@
 import os
 import random
+import pathlib
 
 import requests
 from dotenv import load_dotenv
@@ -35,7 +36,8 @@ def get_url_for_upload_image(group_id, token, api_version='5.131'):
     return response.json()['response']['upload_url']
 
 
-def save_image_to_vk(group_id, token, photo, server, hash, comics_title, api_version='5.131'):
+def save_image_to_vk(group_id, token, photo, server, hash,
+                     comics_title, api_version='5.131'):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     params = {
         'group_id': group_id,
@@ -61,30 +63,29 @@ def upload_image_to_vk(url, image_filepath):
     return response.json()
 
 
-def publish_wall_post(vk_group_id, token, message, owner_id, photo_id, api_version='5.131'):
+def publish_wall_post(vk_group_id, token, message, owner_id,
+                      photo_id, api_version='5.131'):
     url = 'https://api.vk.com/method/wall.post'
-    post_data = {
-        'owner_id':-int(vk_group_id),
-        'from_group':1,
-        'message':message,
+    post_params = {
+        'owner_id': -int(vk_group_id),
+        'from_group': 1,
+        'message': message,
         'access_token': token,
-        'attachments':f'photo{owner_id}_{photo_id}',
-        'v':api_version,
+        'attachments': f'photo{owner_id}_{photo_id}',
+        'v': api_version,
     }
-    response = requests.post(url, data=post_data)
+    response = requests.post(url, data=post_params)
     response.raise_for_status()
 
 
 if __name__ == "__main__":
     load_dotenv()
-    vk_app_id = os.environ.get('VK_CLIENT_ID')
     vk_group_id = os.environ.get('VK_GROUP_ID')
     vk_app_token = os.environ.get('VK_CLIENT_TOKEN')
     last_comics_number = get_comics()["num"]
     random_comics = get_comics(random.randint(1, last_comics_number + 1))
     img_url = random_comics['img']
-    image_dir = os.path.join('images/')
-    os.makedirs(os.path.join(image_dir), exist_ok=True)
+    img_folder = pathlib.Path.cwd()
     comics_year = random_comics['year']
     comics_month = random_comics['month']
     comics_day = random_comics['day']
@@ -92,23 +93,29 @@ if __name__ == "__main__":
     comics_title = random_comics['title']
     comics_alt = random_comics['alt']
     try:
-        image_filepath = download_image(img_url, comics_date, image_dir)
-        url_for_upload_image = get_url_for_upload_image(vk_group_id, vk_app_token)
-        upload_image_response = upload_image_to_vk(url_for_upload_image, image_filepath)
+        image_filepath = download_image(img_url, comics_date, img_folder)
+        url_for_upload_image = get_url_for_upload_image(
+            vk_group_id,
+            vk_app_token
+            )
+        upload_image_response = upload_image_to_vk(
+            url_for_upload_image,
+            image_filepath
+            )
         photo = upload_image_response['photo'],
         server = upload_image_response['server'],
-        hash = upload_image_response['hash'],
+        photo_hash = upload_image_response['hash'],
         save_image_resp = save_image_to_vk(
-            vk_group_id, 
-            vk_app_token, 
+            vk_group_id,
+            vk_app_token,
             photo,
             server,
-            hash,
+            photo_hash,
             comics_title
             )
         owner_id = save_image_resp[0]["owner_id"]
         photo_id = save_image_resp[0]["id"]
-        publish_wall_post(vk_group_id, vk_app_token, comics_alt, owner_id, photo_id)
+        publish_wall_post(vk_group_id, vk_app_token,
+                          comics_alt, owner_id, photo_id)
     finally:
         os.remove(image_filepath)
-        os.rmdir(image_dir)

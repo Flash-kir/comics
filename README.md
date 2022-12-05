@@ -21,16 +21,13 @@ cp example.env .env
 ```
 В созданном файле хранятся переменные окружения:
 ```bash
-VK_CLIENT_ID='514...'
 VK_GROUP_ID='2171....'
 VK_CLIENT_TOKEN='vk1.a.EMQlcDqdD0....'
 ```
 
 #### Получение переменных
 На [странице](https://vk.com/groups?tab=admin) cоздайте группу VK по [инструкции](https://vk.com/@tectgryppa-poshagovaya-instrukciya-po-sozdaniu-gruppy-v-vk).
-- VK_CLIENT_ID
-
-Создайте [приложение](https://vk.com/editapp?act=create), тип укажите `standalone`. Запишите в `VK_CLIENT_ID` идентификационный номер приложения.
+Создайте [приложение](https://vk.com/editapp?act=create), тип укажите `standalone`. 
 - VK_GROUP_ID
 
 Для определения `VK_GROUP_ID` воспользуйтесь сервисом по [ссылке](https://regvk.com/id/).
