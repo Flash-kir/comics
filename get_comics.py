@@ -36,7 +36,7 @@ def get_url_for_upload_image(group_id, token, api_version='5.131'):
     return response.json()['response']['upload_url']
 
 
-def save_image_to_vk(group_id, token, photo, server, hash,
+def save_image_to_vk(group_id, token, photo, server, photo_hash,
                      comics_title, api_version='5.131'):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     params = {
@@ -45,7 +45,7 @@ def save_image_to_vk(group_id, token, photo, server, hash,
         'v': api_version,
         'photo': photo,
         'server': server,
-        'hash': hash,
+        'hash': photo_hash,
         'caption': comics_title,
     }
     response = requests.get(url, params=params)
